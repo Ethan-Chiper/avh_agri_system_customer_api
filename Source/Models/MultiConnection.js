@@ -5,11 +5,11 @@ const DB_URL = Config.DB_URL;
 const MultiDBConnection = {
     /**
      * MongoData Base connection
-     * @param {*} Express 
-     * @returns 
+     * @param {*} Express
+     * @returns
      */
     establish: async (Express) => {
-        console.log('DB_URL.CUSTOMER_URL',DB_URL.CUSTOMER_URL);
+        console.log('DB_URL.CUSTOMER_URL', DB_URL.CUSTOMER_URL);
         return await new Promise(async (resolve) => {
             let customerDBCheck = false;
 
