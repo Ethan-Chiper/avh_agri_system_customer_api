@@ -1,6 +1,3 @@
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable security/detect-object-injection */
-/* eslint-disable node/exports-style */
 const MongoConnection = () => {
 	let mongoose;
 	mongoose = require('mongoose');

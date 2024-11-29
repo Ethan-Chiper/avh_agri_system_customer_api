@@ -1,20 +1,17 @@
 const { createCustomer } = require('../Repository/Customerrepository');
 const { todayDate, endDate, dateFinder, getNanoId, isEmpty } = require('../Helpers/Utils');
-const SidebarModel = require('../Models/SidebarModel');
 const {createUserAndTokenInKong,deleteUser} = require('../Helpers/KongUtils');
 
-const ActivityController = {
+const CustomerController = {
     /**
-     * create activity
+     * create customer
      * @param {*} requestData
      * @returns
      */
-    createActivity: async (requestObject) => {
+    Create: async (requestObject) => {
         try {
             let uniqeID = 'customer_' + getNanoId();
-            
-            console.log(1, requestObject);
-            if (isEmpty(requestObject)) {
+                        if (isEmpty(requestObject)) {
                 return {
                     error: true,
                     message: 'Request data is not found',
@@ -217,4 +214,4 @@ const ActivityController = {
     // }
 };
 
-module.exports = ActivityController;
+module.exports = CustomerController;
