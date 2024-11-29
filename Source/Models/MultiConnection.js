@@ -9,7 +9,6 @@ const MultiDBConnection = {
      * @returns
      */
     establish: async (Express) => {
-        console.log('DB_URL.CUSTOMER_URL', DB_URL.CUSTOMER_URL);
         return await new Promise(async (resolve) => {
             let customerDBCheck = false;
 
