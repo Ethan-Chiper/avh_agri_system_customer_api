@@ -3,9 +3,15 @@ const Config = require('../App/Config');
 const DB_URL = Config.DB_URL;
 
 const MultiDBConnection = {
+    /**
+     * MongoData Base connection
+     * @param {*} Express 
+     * @returns 
+     */
     establish: async (Express) => {
+        console.log('DB_URL.CUSTOMER_URL',DB_URL.CUSTOMER_URL);
         return await new Promise(async (resolve) => {
-            let productDBCheck = false;
+            let customerDBCheck = false;
 
             mongoose.set('strictQuery', true);
             try {
@@ -16,13 +22,13 @@ const MultiDBConnection = {
                     // useUnifiedTopology: true
                 });
                 console.log(' customer database connection established');
-                productDBCheck = true;
+                customerDBCheck = true;
             } catch (error) {
                 throw error;
             }
             mongoose.set('debug', true);
 
-            resolve([productDBCheck]);
+            resolve([customerDBCheck]);
         })
             .then(() => {
                 Express.listen('1509', () => {
@@ -33,7 +39,7 @@ const MultiDBConnection = {
                 throw error;
             });
     },
-    getProductDBConnection: () => {
+    getCustomerDBConnection: () => {
         return mongoose;
     }
 };

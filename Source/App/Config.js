@@ -4,6 +4,6 @@ const environment = process.env;
 
 module.exports = {
     DB_URL: {
-        PRODUCT_URL: environment.CUSTOMER_URL || 'mongodb://localhost:27017/customer'
+        CUSTOMER_URL: environment.CUSTOMER_URL || 'mongodb://localhost:27017/customer'
     }
 };
