@@ -1,31 +1,39 @@
 {
-  "scripts": {
-    "prepare": "husky install"
-  },
-  "dependencies": {
-    "body-parser": "^1.20.3",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.1",
-    "express-fileupload": "^1.5.1",
-    "jsonwebtoken": "^9.0.2",
-    "moment": "^2.30.1",
-    "mongoose": "^8.8.3",
-    "mongoose-timestamp": "^0.6.0",
-    "nanoid": "^3.3.4",
-    "path": "^0.12.7",
-    "request": "^2.88.2"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.15.0",
-    "eslint": "^9.15.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "globals": "^15.12.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.2.10",
-    "prettier": "^3.4.1"
-  },
-  "lint-staged": {
-  "*.js": ["eslint --fix", "git add"]
-}
+    "scripts": {
+        "prepare": "husky install",
+        "start": "node Source/index.js",
+        "formate": "npx prettier --write .",
+        "dev": "nodemon node Source/index.js",
+        "lint": "eslint Source/**/*.js"
+    },
+    "dependencies": {
+        "body-parser": "^1.20.3",
+        "dotenv": "^16.4.5",
+        "express": "^4.21.1",
+        "express-fileupload": "^1.5.1",
+        "jsonwebtoken": "^9.0.2",
+        "moment": "^2.30.1",
+        "mongoose": "^8.8.3",
+        "mongoose-timestamp": "^0.6.0",
+        "nanoid": "^3.3.4",
+        "path": "^0.12.7",
+        "request": "^2.88.2"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.15.0",
+        "eslint": "^9.15.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "globals": "^15.12.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^15.2.10",
+        "nodemon": "^3.1.7",
+        "prettier": "^3.4.1"
+    },
+    "lint-staged": {
+        "*.js": [
+            "eslint --fix",
+            "git add"
+        ]
+    }
 }
