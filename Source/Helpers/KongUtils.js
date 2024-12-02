@@ -13,10 +13,12 @@ const KongUtils = {
      * @param callback
      */
     createUserAndTokenInKong: (id, callback) => {
+        let [customer, code] = id.split('_');
         let options = {
             url: Config.KONG_URL.KONG,
             form: {
-                username: id
+                username: id,
+                tags: customer
             },
             method: 'POST'
         };
@@ -53,6 +55,7 @@ const KongUtils = {
                         );
                         callback(token, body);
                     } catch (err) {
+                        console.log('err', err);
                         console.log('Exception from generateAuthToken' + err.message);
                         callback(null, {});
                     }
