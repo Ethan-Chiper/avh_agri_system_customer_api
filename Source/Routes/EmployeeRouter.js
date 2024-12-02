@@ -11,6 +11,7 @@ const { createEmployeeValidation, UpdateStatus } = require('../Validators/Employ
 Router.post('/create', createEmployeeValidation(), async (request, response) => {
     try {
         let hasErrors = validationResult(request);
+        console.log('hasErrors', hasErrors?.errors[0]?.msg);
         if (hasErrors.isEmpty()) {
             let { error, message, data } = await Create(request?.body);
             if (!isEmpty(data) && error === false) {
