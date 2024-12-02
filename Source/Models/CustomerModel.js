@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const timestamps = require('mongoose-timestamp');
 
 const customerSchema = new mongoose.Schema({
+    customer_id: { type: String },
     customerName: { type: String, required: true },
     contactNumber: { type: String, required: true },
     address: {
@@ -20,7 +21,7 @@ const customerSchema = new mongoose.Schema({
     ],
     transaction: {
         totalAmount: { type: Number, required: true },
-        paymentStatus: { type: String, enum: ['Pending', 'Completed'], default: 'Pending' },
+        paymentStatus: { type: String, enum: ['Pending', 'Completed', 'Failure'], default: 'Pending' },
         purchaseDate: { type: Date, default: Date.now }
     }
 });

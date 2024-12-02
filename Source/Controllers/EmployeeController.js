@@ -11,17 +11,18 @@ const EmployeeController = {
             if (!requestData?.userName) {
                 return {
                     error: true,
-                    message: 'userName fields are required',
+                    message: 'employee_name fields are required',
                     data: {}
                 };
             }
             let requestObject = {
                 employee_id: getNanoId(),
-                employee_Name: requestData?.userName
+                employee_name: requestData?.employee_name,
+                faceData: requestData?.faceData ?? ''
             };
 
             let Employee = await createEmployee(requestObject);
-
+            console.log('Employee', Employee);
             if (isEmpty(Employee)) {
                 return {
                     error: true,
@@ -54,7 +55,7 @@ const EmployeeController = {
             // let limit = query?.limit ? Number.parseInt(query?.limit) : 10;
             // let page = query?.page ? Number.parseInt(query?.page) : 1;
             if (query?.employee_id) queryObject['employee_id'] = query?.employee_id;
-            if (query?.name) queryObject['name'] = query?.name;
+            if (query?.employee_name) queryObject['employee_name'] = query?.employee_name;
             if (query?.from_date || query?.to_date || query.date_option) {
                 queryObject['createdAt'] = dateFinder(query);
             }
@@ -118,60 +119,6 @@ const EmployeeController = {
             };
         }
     },
-    update: async (requestData) => {
-        try {
-            if (isEmpty(requestData)) {
-                return {
-                    error: true,
-                    message: 'activity data is not empty',
-                    data: undefined
-                };
-            }
-            if (!requestData?.title || !requestData?.description || !requestData?.index) {
-                return {
-                    Status: 'Failed',
-                    message: 'Title, description, and index are required fields',
-                    data: {}
-                };
-            } else {
-                const activity = await findOneActivity({
-                    activity_id: requestData?.activity_id
-                });
-                if (isEmpty(activity)) {
-                    return {
-                        error: true,
-                        message: 'activity data is not found',
-                        data: undefined
-                    };
-                }
-                let requestObject = {
-                    activity_id: requestData?.activity_id ?? activity?.activity_id,
-                    title: requestData?.title ?? activity?.title,
-                    description: requestData?.description ?? activity?.description,
-                    index: requestData?.index ?? activity?.index
-                };
-                let UpateResult = await updateActivity(requestObject);
-                if (!isEmpty(UpateResult)) {
-                    return {
-                        error: false,
-                        message: 'activity updated successful',
-                        data: UpateResult
-                    };
-                } else {
-                    return {
-                        error: true,
-                        message: 'activity is not updated',
-                        data: undefined
-                    };
-                }
-            }
-        } catch (error) {
-            return {
-                error: true,
-                message: error.message
-            };
-        }
-    },
     /**
      * Update employee details
      * @param {*} requestData
@@ -205,7 +152,7 @@ const EmployeeController = {
                 }
                 let requestObject = {
                     activity_id: requestData?.employee_id ?? employee?.employee_id,
-                    name: requestData?.name ?? employee?.name,
+                    employee_name: requestData?.employee_name ?? employee?.employee_name,
                     faceData: requestData?.faceData ?? employee?.faceData
                 };
                 let UpateResult = await updateEmployee(requestObject);

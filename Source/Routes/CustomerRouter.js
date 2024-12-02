@@ -2,11 +2,12 @@ const Express = require('express');
 const Router = Express.Router();
 const { Create } = require('../Controllers/CustomerController');
 const { isEmpty } = require('../Helpers/Utils');
-const { VerifyToken } = require('../Helpers/JWSToken');
+// const { VerifyToken } = require('../Helpers/JWSToken');
 const { sendFailureMessage, sendSuccessData } = require('../App/Responder');
 
 // Use VerifyToken as middleware without invoking it
-Router.post('/create', VerifyToken, async (request, response) => {
+Router.post('/create', async (request, response) => {
+    console.log();
     try {
         let { error, message, data } = await Create(request?.body);
         if (!isEmpty(data) && error === false) {
@@ -19,4 +20,3 @@ Router.post('/create', VerifyToken, async (request, response) => {
 });
 
 module.exports = Router;
-
