@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unsafe-optional-chaining */
 const { customAlphabet } = require('nanoid');
 const moment = require('moment');
 // const Request = require('request');
@@ -161,7 +163,7 @@ const Utils = {
         // Monthly check (current month)
         const currentMonthStart = new Date(currentYear, currentMonth - 1, 1);
         const currentMonthEnd = new Date(currentYear, currentMonth, 0);
-        dateCondition = {
+        let dateCondition = {
             createdAt: {
                 $gte: currentMonthStart,
                 $lt: currentMonthEnd
@@ -300,7 +302,76 @@ const Utils = {
                 data: {}
             };
         }
-    }
+    },
+    /**
+	 * network call
+	 * @param {*} options 
+	 * @returns 
+	 */
+	networkCall: async (options) => {
+		try {
+			let postData = {};
+
+			if (Utils.isEmpty(options?.url)) {
+				return {
+					error: 'please provide a url',
+					message: undefined
+				};
+			}
+			postData['url'] = options?.url;
+			postData['timeout'] = options?.timeout || 120_000;
+
+			// headers prepare for http request
+			if (Utils.isEmpty(options?.headers)) {
+				postData['headers'] = {
+					'Content-Type': 'application/json'
+				};
+			} else {
+				let headers = {'Content-Type': 'application/json'};
+				for (let key in options?.headers) {
+					headers[key] = options?.headers[key];
+				}
+				postData['headers'] = headers;
+			}
+
+			// to decide method for http request
+			postData['method'] = options?.method || 'GET';
+
+			if (!Utils.isEmpty(options?.body)) {
+				try {
+					postData['body'] = JSON.stringify(options?.body);
+				} catch (error) {
+					return {error: 'unable to stringify body'};
+				}
+			}
+
+			if (!Utils.isEmpty(options?.formData)) {
+				postData['formData'] = options?.formData;
+			}
+
+			if (options?.admin) {
+				postData['headers']['x-consumer-username'] = 'admin_' + options.admin?.id;
+			}
+
+			// FORM data handling
+			if (!Utils.isEmpty(options?.form)) {
+				postData['form'] = options?.form;
+			}
+			let errorData;
+			let bodyData;
+			await new Promise((resolve) => {
+				Request(postData, (error, response, body) => {
+					errorData = error;
+					bodyData = body;
+					resolve(error, response, body);
+				});
+			});
+			return {error: errorData, body: bodyData};
+		} catch (error) {
+			// eslint-disable-next-line no-constant-binary-expression
+			return {error: error, message: 'Something went wrong' || error?.message};
+		}
+	},
 };
 
 module.exports = Utils;
