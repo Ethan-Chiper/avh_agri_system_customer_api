@@ -10,8 +10,8 @@ const CustomerQuery = {
      * @returns {Promise<queryOptions>}
      */
     createCustomer: async (queryOptions) => {
-        let document = queryOptions ?? {};
-        let options = queryOptions ?? {};
+        let document = queryOptions?.document ?? {};
+        let options = queryOptions?.options ?? {};
         let activity = await CustomerModel.create([document], options);
         return activity[0];
     },

@@ -8,17 +8,39 @@ const CustomerController = {
      * @param {*} requestData
      * @returns
      */
-    Create: async (requestObject) => {
+    Create: async (requestData) => {
         try {
-            let uniqeID = 'customer_' + getNanoId();
-            if (isEmpty(requestObject)) {
+            if (isEmpty(requestData)) {
                 return {
                     error: true,
                     message: 'Request data is not found',
                     data: undefined
                 };
             }
-            let customer = await createCustomer({ document: uniqeID, options: { lean: false } });
+            console.log('requestData', requestData);
+            let requestObject = {
+                customer_id: getNanoId(),
+                customerName: requestData?.customerName,
+                contactNumber: requestData?.contactNumber,
+                address: {
+                    line1: requestData?.address?.line1,
+                    city: requestData?.address?.city,
+                    state: requestData?.address?.state,
+                    postalCode: requestData?.address?.postalCode
+                },
+                products: [
+                    {
+                        productId: requestData?.product_id,
+                        productName: requestData?.productName,
+                        quantity: requestData?.quantity,
+                        price: requestData?.price
+                    }
+                ],
+                transaction: {
+                    totalAmount: requestData?.transaction?.totalAmount
+                }
+            };
+            let customer = await createCustomer({ document: requestObject, options: { lean: false } });
             if (isEmpty(customer)) {
                 return {
                     error: true,
@@ -37,9 +59,10 @@ const CustomerController = {
                 data: customer
             };
         } catch (error) {
+            console.log('error', error);
             return {
                 error: true,
-                message: error,
+                message: error.message,
                 data: undefined
             };
         }
