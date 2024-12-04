@@ -23,7 +23,6 @@ const KongUtils = {
             method: 'POST'
         };
         request.post(options, (err, data) => {
-            console.log(1, err);
             if (!err) KongUtils.generateAuthToken(id, callback);
             else if (callback) callback(null);
         });
@@ -55,7 +54,6 @@ const KongUtils = {
                         );
                         callback(token, body);
                     } catch (err) {
-                        console.log('err', err);
                         console.log('Exception from generateAuthToken' + err.message);
                         callback(null, {});
                     }
