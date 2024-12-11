@@ -62,7 +62,7 @@ const KongUtils = {
         );
     },
     /**
-     * delete product
+     * Delete product
      * @param {*} productId
      * @returns
      */
