@@ -16,7 +16,7 @@
         "helmet": "^8.0.0",
         "jsonwebtoken": "^9.0.2",
         "moment": "^2.30.1",
-        "mongoose": "^8.8.3",
+        "mongoose": "^8.9.5",
         "mongoose-timestamp": "^0.6.0",
         "nanoid": "^3.3.4",
         "path": "^0.12.7",
