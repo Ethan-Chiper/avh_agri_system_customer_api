@@ -1,6 +1,6 @@
 const { createCustomer } = require('../Repository/Customerrepository');
-const { todayDate, endDate, dateFinder, getNanoId, isEmpty } = require('../Helpers/Utils');
-const { createUserAndTokenInKong, deleteUser } = require('../Helpers/KongUtils');
+const {  getNanoId, isEmpty } = require('../Helpers/Utils');
+const { createUserAndTokenInKong } = require('../Helpers/KongUtils');
 
 const CustomerController = {
     /**
