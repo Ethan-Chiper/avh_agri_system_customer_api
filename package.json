@@ -19,6 +19,7 @@
         "mongoose": "^8.8.3",
         "mongoose-timestamp": "^0.6.0",
         "nanoid": "^3.3.4",
+        "nodemailer": "^6.10.0",
         "path": "^0.12.7",
         "request": "^2.88.2",
         "swagger-jsdoc": "^6.2.8",

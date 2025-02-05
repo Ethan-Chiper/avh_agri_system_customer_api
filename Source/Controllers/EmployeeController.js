@@ -1,5 +1,20 @@
 const { createEmployee, findEmployee, findOneEmployee, updateEmployee } = require('../Repository/Employeerepository');
-const { isEmpty, getNanoId, dateFinder } = require('../Helpers/Utils');
+const { isEmpty, getNanoId, dateFinder, generateOTP } = require('../Helpers/Utils');
+const dotenv = require('dotenv');
+dotenv.config({ path: 'Source/.env.production' });
+const environment = process.env;
+
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: environment.EMAIL_USER,
+        pass: environment.EMAIL_PASS
+    }
+});
 
 const EmployeeController = {
     /**
@@ -18,7 +33,8 @@ const EmployeeController = {
             let requestObject = {
                 employee_id: getNanoId(),
                 employee_name: requestData?.employee_name,
-                faceData: requestData?.faceData ?? ''
+                faceData: requestData?.faceData ?? '',
+                email: requestData?.email ?? ''
             };
 
             let Employee = await createEmployee(requestObject);
@@ -170,6 +186,76 @@ const EmployeeController = {
                     };
                 }
             }
+        } catch (error) {
+            return {
+                error: true,
+                message: error.message,
+                data: undefined
+            };
+        }
+    },
+
+    Notification: async (requestData) => {
+        try {
+            let requestObject = {};
+            if (isEmpty(requestData)) {
+                return {
+                    error: true,
+                    message: 'employee data is not empty',
+                    data: undefined
+                };
+            }
+            if (!requestData?.email) {
+                return {
+                    error: true,
+                    message: 'Email ID is required',
+                    data: undefined
+                };
+            }
+            if (requestData?.email) requestObject['email'] = requestData?.email;
+            let employeeData = await findEmployee(requestObject);
+            if (isEmpty(employeeData)) {
+                return {
+                    error: true,
+                    message: 'Employee list is not found',
+                    data: undefined
+                };
+            }
+            // Prepare email options
+            const mailOptions = {
+                to: requestData?.email,
+                subject: 'Alert message',
+                html: `
+                <div style="text-align: center; margin-top: 20px;">
+                    <img src="cid:ollatvImage" alt="OllaTV Logo" style="width: 150px; height: auto; border-radius: 5px;">
+                </div>
+                <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 400px; border: 1px solid #ddd; border-radius: 10px; margin: 20px auto; background-color: #f9f9f9;">
+                    <h2 style="text-align: center; color: #333;">Your Message</h2>
+                    <p style="text-align: center; color: #555; font-size: 16px;">Please follow this section:</p>
+                    <div style="text-align: center; margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #fff; font-size: 24px; font-weight: bold; color: #333;">
+                        ${requestData?.message}
+                    </div>
+                    <p style="text-align: center; color: #888; font-size: 14px;">This code is valid for 15 minutes.</p>
+                </div>`
+            };
+
+            // Send OTP via email
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return {
+                        error: true,
+                        message: 'Failed to send OTP email',
+                        data: null
+                    };
+                } else {
+                    console.log('Email sent successfully:', info.response);
+                    return {
+                        error: false,
+                        message: 'Email sent successfully',
+                        data: undefined
+                    };
+                }
+            });
         } catch (error) {
             return {
                 error: true,

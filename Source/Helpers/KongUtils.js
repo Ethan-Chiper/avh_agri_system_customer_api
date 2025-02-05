@@ -72,9 +72,7 @@ const KongUtils = {
                 url: Config.KONG_URL.KONG + 'consumers/product_' + productId,
                 method: 'DELETE'
             };
-            console.log('postData', postData);
             let data = await networkCall(postData);
-            console.log('data', data);
             if (data) {
                 return { error: false, message: 'User Deleted in Kong successfully!' };
             }

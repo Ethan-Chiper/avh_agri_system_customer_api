@@ -14,7 +14,15 @@ const Utils = {
         let randomId = customAlphabet(alphabet, 12);
         return randomId();
     },
-
+    /**
+     * Integer Value
+     * @returns
+     */
+    generateOTP: () => {
+        let alphabet = '1234567890';
+        let uniqueId = customAlphabet(alphabet, 6);
+        return uniqueId();
+    },
     /**
      * Integer Value
      * @returns

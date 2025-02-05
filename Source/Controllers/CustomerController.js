@@ -17,7 +17,6 @@ const CustomerController = {
                     data: undefined
                 };
             }
-            console.log('requestData', requestData);
             let requestObject = {
                 customer_id: getNanoId(),
                 customerName: requestData?.customerName,
