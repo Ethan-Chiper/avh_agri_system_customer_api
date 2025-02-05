@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 const mongoose = require('mongoose');
 const Config = require('../App/Config');
 const DB_URL = Config.DB_URL;

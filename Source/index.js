@@ -30,20 +30,19 @@ const swaggerOptions = {
         info: {
             title: 'Node.js CRUD API',
             version: '1.0.0',
-            description: 'A simple CRUD API documented using Swagger',
+            description: 'A simple CRUD API documented using Swagger'
         },
         servers: [
             {
                 url: 'http://192.168.17.24:1509',
-                description: 'Local server',
-            },
-        ],
+                description: 'Local server'
+            }
+        ]
     },
-    apis: ['./Swagger/*.js'],
+    apis: ['./Swagger/*.js']
 };
 // Initialize Swagger docs
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
-console.log(JSON.stringify(swaggerDocs, null, 2));
 App.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Other middleware

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 const Express = require('express');
 const Router = Express.Router();
-const { Create, List, Details, Update } = require('../Controllers/EmployeeController');
+const { Create, List, Details, Update, Notification } = require('../Controllers/EmployeeController');
 const { isEmpty } = require('../Helpers/Utils');
 const { VerifyToken } = require('../Helpers/JWSToken');
 const { sendFailureMessage, sendSuccessData } = require('../App/Responder');
@@ -55,6 +55,23 @@ Router.patch('/update', UpdateStatus, VerifyToken, async (request, response) => 
         let hasError = validationResult(request);
         if (hasError.isEmpty()) {
             let { error, message, data } = await Update(request?.body);
+            if (!isEmpty(data) && error === false) {
+                return sendSuccessData(response, message, data);
+            }
+            return sendFailureMessage(response, message, 400);
+        } else {
+            return sendFailureMessage(response, hasError?.errors[0]?.msg, 422);
+        }
+    } catch (error) {
+        return sendFailureMessage(response, error, 500);
+    }
+});
+
+Router.patch('/email_notification', VerifyToken, async (request, response) => {
+    try {
+        let hasError = validationResult(request);
+        if (hasError.isEmpty()) {
+            let { error, message, data } = await Notification(request?.body);
             if (!isEmpty(data) && error === false) {
                 return sendSuccessData(response, message, data);
             }
